@@ -43,6 +43,11 @@
         page-break-inside: avoid;
         page-break-after: auto;
       }
+      #bulkInput {
+        background-color: #fefefe;
+        border: 1px solid #ccc;
+        font-family: "Courier New", monospace;
+      }
     </style>
   </head>
   <body id="page-top">
@@ -54,6 +59,35 @@
           Fyll ut skjemaet for å få en ferdig kontrakt for korttidsleie av
           parkeringsplass.
         </p>
+        <div class="mx-auto" style="max-width: 600px">
+          <div class="form-group">
+            <label for="bulkInput"
+              ><strong>Lim inn kontraktsdata</strong></label
+            >
+            <textarea
+              id="bulkInput"
+              class="form-control"
+              rows="7"
+              placeholder="Navn: Ola Nordmann&#10;Adresse: Karl Johans gate 1&#10;Telefon: 12345678&#10;E-post: ola@norge.no&#10;Startdato: 01.07.2025&#10;Sluttdato: 10.07.2025&#10;Beløp: 200"
+            ></textarea>
+            <div class="d-flex gap-2 mt-2">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="fillForm()"
+              >
+                Fyll ut skjema automatisk
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                onclick="copyTemplate()"
+              >
+                Kopier mal
+              </button>
+            </div>
+          </div>
+        </div>
 
         <form
           id="contractForm"
@@ -138,6 +172,7 @@
 
     <script src="js/priceCalculator.js"></script>
     <script src="js/contractGenerator.js"></script>
+    <script src="js/fillform.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   </body>
 </html>
