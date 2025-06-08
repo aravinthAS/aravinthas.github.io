@@ -2,14 +2,30 @@
 <html lang="no">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Personlig nettside for reiser, CV og parkering ved Gardermoen" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Personlig nettside for reiser, CV og parkering ved Gardermoen"
+    />
     <meta name="author" content="" />
     <title>Aravinth Alvapillai – Personlig Side</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"
+      rel="stylesheet"
+    />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -20,145 +36,108 @@
         border-radius: 8px;
         border: 1px solid #ddd;
       }
+      #contractTemplate {
+        page-break-inside: auto;
+      }
+      #contractTemplate > * {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
     </style>
   </head>
   <body id="page-top">
-    <!-- ...NAV/HEADER/SECTIONS... (unchanged) -->
-
     <section class="page-section" id="parking">
       <div class="container">
         <h2 class="text-center mt-0">Leie Parkering</h2>
         <hr class="divider my-4" />
-        <p class="text-center">Fyll ut skjemaet for å få en ferdig kontrakt for korttidsleie av parkeringsplass.</p>
+        <p class="text-center">
+          Fyll ut skjemaet for å få en ferdig kontrakt for korttidsleie av
+          parkeringsplass.
+        </p>
 
-        <form id="contractForm" class="mx-auto" style="max-width: 600px;">
-          <div class="form-group"><label>Navn</label><input type="text" class="form-control" name="name" required></div>
-          <div class="form-group"><label>Adresse</label><input type="text" class="form-control" name="address" required></div>
-          <div class="form-group"><label>Telefon</label><input type="tel" class="form-control" name="phone" required></div>
-          <div class="form-group"><label>E-post</label><input type="email" class="form-control" name="email" required></div>
-          <div class="form-group"><label>Startdato</label><input type="date" class="form-control" name="start" required></div>
-          <div class="form-group"><label>Sluttdato</label><input type="date" class="form-control" name="end" required></div>
+        <form
+          id="contractForm"
+          class="mx-auto"
+          style="max-width: 600px"
+          novalidate
+        >
+          <div class="form-group">
+            <label>Navn</label>
+            <input type="text" class="form-control" name="name" required />
+          </div>
+          <div class="form-group">
+            <label>Adresse</label>
+            <input type="text" class="form-control" name="address" required />
+          </div>
+          <div class="form-group">
+            <label>Telefon</label>
+            <input type="tel" class="form-control" name="phone" required />
+          </div>
+          <div class="form-group">
+            <label>E-post</label>
+            <input type="email" class="form-control" name="email" required />
+          </div>
+          <div class="form-group">
+            <label>Startdato</label>
+            <input type="date" class="form-control" name="start" required />
+          </div>
+          <div class="form-group">
+            <label>Sluttdato</label>
+            <input type="date" class="form-control" name="end" required />
+          </div>
           <div class="form-group">
             <label>Estimert leiepris</label>
-            <div id="calculatedPrice" style="font-weight: bold;">Velg datoer for å beregne pris</div>
+            <p id="leiepris">
+              Prisene varierer etter sesong og etterspørsel. Oppgitt pris er kun
+              et estimat.
+            </p>
+            <div id="calculatedPrice" style="font-weight: bold">
+              Velg datoer for å beregne pris
+            </div>
           </div>
-          <div class="form-group"><label>Sted og dato for signering</label><input type="text" class="form-control" name="locationdate" placeholder="F.eks. Gardermoen, 11.05.2025" required></div>
-          <button type="button" class="btn btn-primary btn-block" onclick="generateContract()">Generer kontrakt</button>
+          <div class="form-group">
+            <label>Manuell pris (valgfritt)</label>
+            <input
+              type="number"
+              name="amount"
+              class="form-control"
+              placeholder="F.eks. 950"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">
+            Send forespørsel om leie
+          </button>
         </form>
 
         <div id="contractResult" class="mt-5"></div>
+
+        <div id="contractTemplate" style="display: none">
+          <span id="c_name"></span>
+          <span id="c_address"></span>
+          <span id="c_phone"></span>
+          <span id="c_email"></span>
+          <span id="c_start"></span>
+          <span id="c_end"></span>
+          <span id="c_amount"></span>
+          <span id="c_date"></span>
+          <span id="c_name2"></span>
+        </div>
       </div>
     </section>
 
     <footer class="bg-light py-5">
       <div class="container">
-        <div class="small text-center text-muted">&copy; <script>document.write(new Date().getFullYear());</script> Aravinth Alvapillai</div>
+        <div class="small text-center text-muted">
+          &copy;
+          <script>
+            document.write(new Date().getFullYear());
+          </script>
+        </div>
       </div>
     </footer>
 
-    <script>
-      function calculatePrice(startDateStr, endDateStr) {
-  const oneDay = 24 * 60 * 60 * 1000;
-  const startDate = new Date(startDateStr);
-  const endDate = new Date(endDateStr);
-  const days = Math.round((endDate - startDate) / oneDay) + 1;
-
-  if (days <= 1) return 90;
-  if (days <= 3) return Math.round(90 + (110 / 2) * (days - 1)); // 90–200 kr
-  if (days <= 7) return Math.round(200 + (290 / 4) * (days - 3)); // 200–490 kr
-  if (days <= 30) return Math.round(490 + (810 / 23) * (days - 7)); // 490–1300 kr
-
-  const extraDays = days - 30;
-  return 1300 + extraDays * 45; // 1300 kr + 45 kr per ekstra dag
-}
-
-      document.querySelector("input[name='start']").addEventListener("change", updatePrice);
-      document.querySelector("input[name='end']").addEventListener("change", updatePrice);
-
-      function updatePrice() {
-        const start = document.querySelector("input[name='start']").value;
-        const end = document.querySelector("input[name='end']").value;
-        if (start && end) {
-          const price = calculatePrice(start, end);
-          document.getElementById("calculatedPrice").textContent = `${price} kr`;
-        }
-      }
-
-      async function generateContract() {
-        const form = document.forms['contractForm'];
-        const name = form.name.value;
-        const address = form.address.value;
-        const phone = form.phone.value;
-        const email = form.email.value;
-        const start = form.start.value;
-        const end = form.end.value;
-        const locationdate = form.locationdate.value;
-
-        const amount = calculatePrice(start, end);
-
-        const contractText = `
-KONTRAKT FOR KORTTIDSLEIE AV PARKERINGSPLASS
-
-1. Partene
-Denne kontrakten er inngått mellom:
-Utleier:
-Navn: Aravinth
-Adresse: Paradevegen 5, 2060 Gardermoen
-Telefon: +47 11111111
-E-post: test@test.no
-
-Leietaker:
-Navn: ${name}
-Adresse: ${address}
-Telefon: ${phone}
-E-post: ${email}
-
-2. Leieobjekt
-Leieobjektet er en parkeringsplass beliggende på følgende adresse:
-Paradevegen 5, Gardermoen 2060
-
-3. Leieperiode
-Leieperioden starter ${start} og varer til ${end}.
-
-4. Leiepris og betaling
-Leieprisen blir på totalt ${amount} kroner for hele leieperioden.
-Betaling skal skje via Vipps til utleiers nummer 47606050 senest dagen før leieperioden starter.
-
-5. Bruk av parkeringsplassen
-Parkeringsplassen skal kun benyttes til parkering av motorkjøretøy som er i forskriftsmessig stand og registrert hos Statens vegvesen.
-Leietaker er ansvarlig for at parkeringsplassen holdes ryddig og fri for søppel.
-
-6. Ansvar og forsikring
-Leietaker er ansvarlig for alle skader som oppstår på parkeringsplassen som følge av leietakers bruk.
-Utleier er ikke ansvarlig for eventuelle skader på leietakers kjøretøy, eller tap av gjenstander som oppbevares i kjøretøyet.
-Leietaker bør ha egen forsikring som dekker eventuelle skader og tyveri.
-
-7. Avslutning av leie
-Leieforholdet opphører automatisk ved utløp av den avtalte leieperioden. Det er ingen oppsigelsestid.
-
-8. Lovvalg og verneting
-Denne avtalen er underlagt norsk lov. Eventuelle tvister skal søkes løst i minnelighet. Dersom det ikke oppnås enighet, skal saken behandles ved utleiers verneting.
-
-9. Underskrifter
-
-${locationdate}
-
-Utleier:
-Aravinth Sivalingam Alvapillai
-
-Leietaker:
-${name}`;
-
-        document.getElementById('contractResult').textContent = contractText;
-
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        const splitText = doc.splitTextToSize(contractText, 180);
-        doc.setFont('times', 'normal');
-        doc.setFontSize(12);
-        doc.text(splitText, 15, 20);
-        doc.save(`kontrakt_${name.replace(/\s+/g, '_')}.pdf`);
-      }
-    </script>
+    <script src="js/priceCalculator.js"></script>
+    <script src="js/contractGenerator.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   </body>
 </html>
