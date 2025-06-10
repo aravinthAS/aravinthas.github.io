@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bekreft bestilling</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 2rem;
+        max-width: 600px;
+        margin: auto;
+      }
+      button {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .info {
+        margin-bottom: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Bekreft parkeringsforespørsel</h2>
+    <div id="content">Laster forespørsel...</div>
+
+    <script type="module">
+      import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+      const ref = new URLSearchParams(window.location.search).get("ref");
+      const key =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhZ3Zmbm5pZ3JidmZyZ2ljc2VvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTUwNDIyNywiZXhwIjoyMDY1MDgwMjI3fQ.l_UfO6ANP_EMNWVA5SnYxxlX8C_VWvAey1Pc0WPe1J8";
+
+      const supabase = createClient(
+        "https://fagvfnnigrbvfrgicseo.supabase.co",
+        key // ← your anon key here
+      );
+
+      async function loadReservation() {
+        const { data, error } = await supabase
+          .from("parking")
+          .select("*")
+          .eq("id", ref)
+          .single();
+
+        if (error || !data) {
+          document.getElementById("content").innerHTML =
+            "<p>Fant ikke forespørselen.</p>";
+          return;
+        }
+
+        if (data.approval_customer) {
+          document.getElementById("content").innerHTML =
+            "<p>Du har allerede bekreftet denne reservasjonen.</p>";
+          return;
+        }
+
+        if (!data.admin_approval) {
+          document.getElementById("content").innerHTML =
+            "<p>Reservasjonen venter fortsatt på godkjenning fra utleier.</p>";
+          return;
+        }
+
+        document.getElementById("content").innerHTML = `
+          <div class="info">
+            <p><strong>Navn:</strong> ${data.name}</p>
+            <p><strong>Periode:</strong> ${data.startdate} til ${data.enddate}</p>
+            <p><strong>Pris:</strong> ${data.price} kr</p>
+          </div>
+          <button onclick="confirmReservation()">Bekreft reservasjonen</button>
+        `;
+
+        window.confirmReservation = async function () {
+          const response = await fetch(
+            `https://fagvfnnigrbvfrgicseo.supabase.co/functions/v1/confirm?ref=${ref}`
+          );
+
+          if (response.ok) {
+            document.getElementById("content").innerHTML =
+              "<p>Reservasjonen er nå bekreftet. Du vil motta e-post med detaljer. ✅</p>";
+          } else {
+            const errText = await response.text();
+            alert("Bekreftelse feilet: " + errText);
+          }
+        };
+      }
+
+      loadReservation();
+    </script>
+  </body>
+</html>

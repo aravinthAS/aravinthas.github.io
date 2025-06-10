@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Godkjenn forespørsel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 2rem;
+        max-width: 600px;
+        margin: auto;
+      }
+      input,
+      button {
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Admin – Godkjenn forespørsel</h2>
+    <div id="content">Laster data...</div>
+
+    <script type="module">
+      import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+      const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhZ3Zmbm5pZ3JidmZyZ2ljc2VvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTUwNDIyNywiZXhwIjoyMDY1MDgwMjI3fQ.l_UfO6ANP_EMNWVA5SnYxxlX8C_VWvAey1Pc0WPe1J8"
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get("ref");
+
+      const supabase = createClient("https://fagvfnnigrbvfrgicseo.supabase.co", key);
+
+      async function loadData() {
+        const { data, error } = await supabase
+          .from("parking")
+          .select("*")
+          .eq("id", ref)
+          .single();
+        console.log(error);
+        if (error || !data) {
+          document.getElementById("content").innerHTML =
+            "Forespørsel ikke funnet.";
+          return;
+        }
+
+        const content = `
+          <p><strong>Navn:</strong> ${data.name}</p>
+          <p><strong>E-post:</strong> ${data.email}</p>
+          <p><strong>Dato:</strong> ${data.startdate} → ${data.enddate}</p>
+          <p><strong>Regnr:</strong> ${data.regnr}</p>
+          <p><strong>Admin status:</strong> ${data.admin_approval}</p>
+          <p><strong>Kunde godkjent:</strong> ${data.approval_customer}</p>
+          <label for="price">Pris:</label>
+          <input type="number" id="price" value="${data.price}" />
+          <button onclick="godkjenn()">Godkjenn forespørsel</button>
+        `;
+        document.getElementById("content").innerHTML = content;
+        window.dataid = data.id;
+      }
+
+      window.godkjenn = async function () {
+        const nyPris = document.getElementById("price").value;
+
+        const response = await fetch(
+          "https://fagvfnnigrbvfrgicseo.supabase.co/functions/v1/admin_review",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: window.dataid,
+              price: nyPris,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          alert("Forespørsel godkjent og e-post sendt til kunde.");
+          location.reload();
+        } else {
+          const err = await response.text();
+          alert("Feil ved godkjenning: " + err);
+        }
+      };
+
+      loadData();
+    </script>
+  </body>
+</html>

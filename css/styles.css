@@ -10173,3 +10173,8 @@ header.masthead h1 {
 .text-white-75 {
   color: rgba(255, 255, 255, 0.75);
 }
+.disabled {
+  pointer-events: none;      /* hindrer klikking, fokus etc */
+  opacity: 0.6;              /* gjør den visuelt grået ut */
+  user-select: none;         /* hindrer tekstmarkering */
+}

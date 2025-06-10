@@ -78,3 +78,16 @@ Typiske Ruby-gems brukt i prosjektet (definert i `Gemfile`):
 - `bootstrap` (lastes inn via CDN eller kompilert SCSS)
 
 ---
+
+
+### Flow
+1. Leie parkering skjema (ta med regnr)
+2. admin sjekker om pris og forespørsel, endrer hvis feil
+3. sender om bekreftelse mail til kunden
+4. kunder svarer ja på lenken. (lenken kan også kopieres, slik at jeg kan sende den i finn.no)
+5. Bekreftelse sendes på mail om hvor det skal parkeres.
+6. Avslå mail sendes til admin
+
+### Verktøy
+supabase database og api
+resend brukes for epost

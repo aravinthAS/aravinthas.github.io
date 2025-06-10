@@ -29,20 +29,6 @@
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-      #contractResult {
-        white-space: pre-wrap;
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-      }
-      #contractTemplate {
-        page-break-inside: auto;
-      }
-      #contractTemplate > * {
-        page-break-inside: avoid;
-        page-break-after: auto;
-      }
       #bulkInput {
         background-color: #fefefe;
         border: 1px solid #ccc;
@@ -52,45 +38,15 @@
   </head>
   <body id="page-top">
     <section class="page-section" id="parking">
-      <div class="container">
+      <div class="container" class="disabled">
         <h2 class="text-center mt-0">Leie Parkering</h2>
         <hr class="divider my-4" />
         <p class="text-center">
-          Fyll ut skjemaet for å få en ferdig kontrakt for korttidsleie av
-          parkeringsplass.
+          Send forespørsel om korttidsleie ved å fylle ut skjemaet
         </p>
-        <div class="mx-auto" style="max-width: 600px">
-          <div class="form-group">
-            <label for="bulkInput"
-              ><strong>Lim inn kontraktsdata</strong></label
-            >
-            <textarea
-              id="bulkInput"
-              class="form-control"
-              rows="7"
-              placeholder="Navn: Ola Nordmann&#10;Adresse: Karl Johans gate 1&#10;Telefon: 12345678&#10;E-post: ola@norge.no&#10;Startdato: 01.07.2025&#10;Sluttdato: 10.07.2025&#10;Beløp: 200"
-            ></textarea>
-            <div class="d-flex gap-2 mt-2">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                onclick="fillForm()"
-              >
-                Fyll ut skjema automatisk
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                onclick="copyTemplate()"
-              >
-                Kopier mal
-              </button>
-            </div>
-          </div>
-        </div>
 
         <form
-          id="contractForm"
+          id="parkingForm"
           class="mx-auto"
           style="max-width: 600px"
           novalidate
@@ -112,12 +68,17 @@
             <input type="email" class="form-control" name="email" required />
           </div>
           <div class="form-group">
+            <label>Bilens Reg NR</label>
+            <input type="text" class="form-control" name="regnr" required />
+          </div>
+
+          <div class="form-group">
             <label>Startdato</label>
-            <input type="date" class="form-control" name="start" required />
+            <input type="date" class="form-control" name="startdate" required />
           </div>
           <div class="form-group">
             <label>Sluttdato</label>
-            <input type="date" class="form-control" name="end" required />
+            <input type="date" class="form-control" name="enddate" required />
           </div>
           <div class="form-group">
             <label>Estimert leiepris</label>
@@ -130,32 +91,18 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Manuell pris (valgfritt)</label>
+            <label>Eventuelt avtalt pris</label>
             <input
               type="number"
-              name="amount"
+              name="price"
               class="form-control"
-              placeholder="F.eks. 950"
+              placeholder="F.eks. 950 eller ikke fyll tall hvis du ikke har avtalt leiepris"
             />
           </div>
           <button type="submit" class="btn btn-primary btn-block">
             Send forespørsel om leie
           </button>
         </form>
-
-        <div id="contractResult" class="mt-5"></div>
-
-        <div id="contractTemplate" style="display: none">
-          <span id="c_name"></span>
-          <span id="c_address"></span>
-          <span id="c_phone"></span>
-          <span id="c_email"></span>
-          <span id="c_start"></span>
-          <span id="c_end"></span>
-          <span id="c_amount"></span>
-          <span id="c_date"></span>
-          <span id="c_name2"></span>
-        </div>
       </div>
     </section>
 
@@ -169,10 +116,10 @@
         </div>
       </div>
     </footer>
-
-    <script src="js/priceCalculator.js"></script>
-    <script src="js/contractGenerator.js"></script>
-    <script src="js/fillform.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="js/priceCalculator.js"></script>
+    <script src="js/fillform.js"></script>
+    <script src="js/parkingForm.js"></script>
   </body>
 </html>

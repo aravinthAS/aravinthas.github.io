@@ -14,8 +14,8 @@ function calculatePrice(startDateStr, endDateStr) {
 }
 
 function updatePrice() {
-  const start = document.querySelector("input[name='start']").value;
-  const end = document.querySelector("input[name='end']").value;
+  const start = document.querySelector("input[name='startdate']").value;
+  const end = document.querySelector("input[name='enddate']").value;
   if (start && end) {
     const price = calculatePrice(start, end);
     document.getElementById("calculatedPrice").textContent = `${price} kr`;
@@ -23,8 +23,8 @@ function updatePrice() {
 }
 
 document
-  .querySelector("input[name='start']")
+  .querySelector("input[name='startdate']")
   .addEventListener("change", updatePrice);
 document
-  .querySelector("input[name='end']")
+  .querySelector("input[name='enddate']")
   .addEventListener("change", updatePrice);
